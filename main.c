@@ -1,9 +1,8 @@
-#include "/lib/lib/main.h"
-#include "./lib/src/nextion.c"
-#include "/lib/src/wiper.c"
-#include "lib/src/hall.c"
-
-#include "lib/src/xbee.c"
+#include "headers/lib/main.h"
+#include "headers/src/nextion.c"
+#include "headers/src/wiper.c"
+#include "headers/src/hall.c"
+#include "headers/src/xbee.c"
 ////
 #include <string.h>
 #include <stdlib.h>
@@ -231,4 +230,49 @@ void init_pins(){
 }
 unsigned long millis(void){
   return millis_counter;
+}
+void parseUartData( char * data ){
+
+     int index = 0;
+     int bmsId = 0;
+     int opCode = 0;
+
+     unsigned char * found;
+
+    found = strtok(data,",");
+    if( found==NULL)
+    {
+        return;
+    }
+    while(found)
+    {
+
+        found = strtok(NULL," ");
+        
+        if( index == 0 ){
+
+              bmsId = atoi(found);
+        }
+        
+        
+        index++;
+    }
+
+
+}
+
+void getUartData(char rcv_ch){
+    if( bufIxBms == 0 && rcv_ch !='[')
+        return;
+
+    bufBms[bufIxBms++] = rcv_ch;
+        
+    if( rcv_ch == '\n'){ //LF
+
+        parseUartData(bufBms);
+        
+        memset( bufBms, '\0', sizeof(bufBms));
+        bufIxBms = 0;
+        
+    }
 }
