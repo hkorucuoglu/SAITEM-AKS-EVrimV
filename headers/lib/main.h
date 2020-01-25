@@ -95,7 +95,10 @@
 
 const float PI = 3.14;
 unsigned long millis_counter=0;
-
+char bufBms[200];
+unsigned short bufIxBms = 0;
+void getUartData(char);
+void parseUartData(char*);
 void opening_test (void);
 void init_pins (void);
 void init_uart(void);
