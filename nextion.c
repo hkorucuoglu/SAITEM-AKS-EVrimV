@@ -19,7 +19,7 @@ Nextion Init_Nextion(char *TEMPERATURE_T_,char *VELOCITY_T_,char *VOLTAGE_T_,cha
 
 
 void _send_data(int temp, int velocity, float current, float voltage, struct Nextion *nex){
-  struct Nextion* nex_ = (Nextion)malloc(sizeof(struct Nextion));
+  struct Nextion* nex_;
   nex_ = nex;
   sprintf(nex_->TEMPERATURE_TEXT,"/%d",temp);
   sprintf(nex_->VELOCITY_TEXT,"/%d",velocity);

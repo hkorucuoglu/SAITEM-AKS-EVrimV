@@ -30,6 +30,7 @@ int _calculate_time(struct Hall *hall){
   {
     hall_->Total_time = millis();
     hall_->Hall_state = 1;
+    // its must return as velocity
   }
   else if(HALL_SENSOR && hall_->Hall_state && millis() - hall_->Total_time > 10){
     hall_->Time = (millis() - hall_->Total_time)/1000.f;
