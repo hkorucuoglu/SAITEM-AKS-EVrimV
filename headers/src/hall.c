@@ -1,6 +1,6 @@
-#include "./lib/lib/hall.h"
+#include "./lib/hall.h"
 #include <stdlib.h>
-#include<stdio.h>
+#include <stdio.h>
 Hall Init_Hall(float Radius){
   Hall thiss;
   thiss = (Hall)malloc(sizeof(struct Hall));

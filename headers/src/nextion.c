@@ -1,4 +1,4 @@
-#include "/lib/lib/nextion.h"
+#include "headers/lib/nextion.h"
 #include <string.h>
 #include <stdlib.h>
 #include<stdio.h>

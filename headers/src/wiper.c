@@ -1,4 +1,4 @@
-#include "./lib/lib/wiper.h"
+#include "headers/lib/wiper.h"
 #include <stdlib.h>
 #include<stdio.h>
 
