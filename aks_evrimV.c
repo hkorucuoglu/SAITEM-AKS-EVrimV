@@ -1,7 +1,9 @@
 #include "/lib/lib/main.h"
-#include "/lib/src/nextion.c"
+#include "./lib/src/nextion.c"
 #include "/lib/src/wiper.c"
 #include "lib/src/hall.c"
+
+#include "lib/src/xbee.c"
 ////
 #include <string.h>
 #include <stdlib.h>
@@ -40,7 +42,7 @@ void Timer1Interrupt() iv IVT_TIMER_1 ilevel 7 ics ICS_SRS {
 //Timer2
 //Prescaler 1:64; PR2 Preload = 62500; Actual Interrupt Time = 500 ms
 
-void InitTimer2(struct Hall*){
+void InitTimer2(struct Hall*, struct Nextion*, struct Xbee*){
   T2CON         = 0x8060;
   T2IP0_bit         = 1;
   T2IP1_bit         = 1;
@@ -51,18 +53,24 @@ void InitTimer2(struct Hall*){
   TMR2                 = 0;
 }
  
-void Timer2Interrupt(struct Hall* hall) iv IVT_TIMER_2 ilevel 7 ics ICS_SRS {
+void Timer2Interrupt(struct Hall* hall,struct Nextion* nextion, struct Xbee* xbee) iv IVT_TIMER_2 ilevel 7 ics ICS_SRS {
   T2IF_bit         = 0;
   //Enter your code here 
-   _calculate_time(hall);
+   VELOCITY = _calculate_time(hall);
+   nextion->send_data(TEMPERATURE,VELOCITY,CURRENT,VOLTAGE,nextion);
+   xbee->send_data(VELOCITY,CURRENT,VOLTAGE,TEMPERATURE);
 }
 void main() {
     Wiper wiper = Init_Wiper(wiper_upper_limit,wiper_under_limit,wiper_first_location);
     Hall hall = Init_Hall(radius);
-    Nextion nextion = Init_Nextion(TEMPERATURE_T ,VELOCITY_T, VOLTAGE_T, CURRENT_T);    
+    Nextion nextion = Init_Nextion(TEMPERATURE_T ,VELOCITY_T, VOLTAGE_T, CURRENT_T);
+    Xbee xbee = Init_Xbee();    
     opening_test();
     init_pins();
     init_uart();
+    InitTimer1();
+    InitTimer2(hall,nextion,xbee);
+    EnableInterrupts();
     while (1)
         {
             //** Hazard **//
@@ -172,7 +180,7 @@ void main() {
         }   
     }
     
-
+    
 }
 
 
