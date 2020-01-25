@@ -24,7 +24,7 @@ int _calculate_vc(float Distance, float Time){
 }
 
 int _calculate_time(struct Hall *hall){
-  struct Hall *hall_ = (Hall)malloc(sizeof(struct Hall));
+  struct Hall *hall_;
   hall_ = hall;
   if (HALL_SENSOR && !hall_->Hall_state)
   {
